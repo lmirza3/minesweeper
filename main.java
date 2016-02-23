@@ -20,6 +20,14 @@ import javax.swing.*;
 
 public class main implements ActionListener{
   
+  MineSweeperGrid game = new MineSweeperGrid();
+  JMenuItem topTen;
+  JMenuItem reset;
+  JMenuItem exit;
+  
+  JMenuItem help;
+  JMenuItem about;
+  
   public static void main (String args[])
   {
     new main();
@@ -27,35 +35,50 @@ public class main implements ActionListener{
   
   public main()
   {
-    MineSweeperGrid game = new MineSweeperGrid();
     JFrame f = new JFrame();
     JMenuBar menuBar = new JMenuBar();
     
-    JMenu menu = new JMenu("Game");
-    menu.setMnemonic(KeyEvent.VK_A);
-    menuBar.add(menu);
+    JMenu gameMenu = new JMenu("Game");
+    gameMenu.setMnemonic(KeyEvent.VK_A);
+    menuBar.add(gameMenu);
     
+    JMenu helpMenu = new JMenu("Help");
+    helpMenu.setMnemonic(KeyEvent.VK_A);
+    menuBar.add(helpMenu);
     
-    JMenuItem reset = new JMenuItem("Reset", KeyEvent.VK_T);
+    //adding menu items for Game
+    reset = new JMenuItem("Reset", KeyEvent.VK_T);
     reset.setMnemonic(KeyEvent.VK_T); //used constructor instead
     reset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
     reset.addActionListener(this);
     
-    JMenuItem topTen = new JMenuItem("Top Ten", KeyEvent.VK_T);
+    topTen = new JMenuItem("Top Ten", KeyEvent.VK_T);
     topTen.setMnemonic(KeyEvent.VK_T); //used constructor instead
     topTen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
     topTen.addActionListener(this);
     
-    JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_T);
+    exit = new JMenuItem("Exit", KeyEvent.VK_T);
     exit.setMnemonic(KeyEvent.VK_T); //used constructor instead
     exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
     exit.addActionListener(this);
     
-    menu.add(reset);
-    menu.add(topTen);
-    menu.add(exit);
+    //adding menu items for help
+    help = new JMenuItem("Help", KeyEvent.VK_T);
+    help.setMnemonic(KeyEvent.VK_T); //used constructor instead
+    help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+    help.addActionListener(this);
     
+    about = new JMenuItem("About", KeyEvent.VK_T);
+    about.setMnemonic(KeyEvent.VK_T); //used constructor instead
+    about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+    about.addActionListener(this);
     
+    gameMenu.add(reset);
+    gameMenu.add(topTen);
+    gameMenu.add(exit);
+    
+    helpMenu.add(help);
+    helpMenu.add(about);
     
     f.setJMenuBar(menuBar);
     f.setLayout(new FlowLayout());
@@ -67,14 +90,37 @@ public class main implements ActionListener{
   }
   
   public void actionPerformed(ActionEvent e) {
-    JMenuItem source = (JMenuItem)(e.getSource());
-    /*if(source == topTen){
+    //TOP TEN
+    if(e.getSource() == topTen){
       System.out.println("hi");
       //perform action when textYes clicked
     }
-    if(e.getSource() == reset){
-      //perform action when textNo clicked
-    }*/
+    //ABOUT
+    if(e.getSource() == about){
+      System.out.println("Development Team:");
+      System.out.println("Lubna Mirza - lmirza3");
+      System.out.println("Yordan Machin - ymachi2");
+      System.out.println("CS 342 MineSweeper Assignment");
+    }
+    //RESET
+    if (e.getSource() == reset)
+    {
+      game.resetGrid();
+    }
+    //HELP
+    if (e.getSource() == help)
+    {
+      System.out.println("The rules in Minesweeper are simple:");
+      System.out.println("- Uncover a mine, and the game ends.");
+      System.out.println("- Uncover an empty square, and you keep playing.");
+      System.out.println("- Uncover a number, and it tells you how many mines lay hidden in the eight surrounding squares");
+    }
+    //EXIT
+    if (e.getSource() == exit)
+    {
+      System.exit(0);
+    }
+    
   }
 }
 
