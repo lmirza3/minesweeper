@@ -5,12 +5,14 @@ import javax.swing.*;
 public class main implements ActionListener{
   
   MineSweeperGrid game = new MineSweeperGrid();
+  JButton smileyButton;
   JMenuItem topTen;
   JMenuItem reset;
   JMenuItem exit;
   
   JMenuItem help;
   JMenuItem about;
+  
   
   public static void main (String args[])
   {
@@ -19,7 +21,22 @@ public class main implements ActionListener{
   
   public main()
   {
+    //overarching frame
     JFrame f = new JFrame();
+    
+    //panel for the number of mines left to be found
+    JPanel panel1 = new JPanel();
+    Icon smiley = new ImageIcon("C:/Users/Lubna/Dropbox/School/CS 342/mineSweeper/smile_button.gif");
+    smileyButton = new JButton(smiley); // Declare and allocate a Button instance called btnColor
+    smileyButton.addActionListener(this);
+    f.add(smileyButton);                       // "this" Container adds the Button
+    //smileyButton.setLabel("green");          // Change the button's label
+    //smileyButton.getLabel();                 // Read the button's label
+
+    JLabel label = new JLabel("Test text");//initialize the label
+    //do some stuff with label here maybe...
+    panel1.add(label);       //now add it
+    f.add(panel1);
     JMenuBar menuBar = new JMenuBar();
     
     JMenu gameMenu = new JMenu("Game");
@@ -87,7 +104,7 @@ public class main implements ActionListener{
       System.out.println("CS 342 MineSweeper Assignment");
     }
     //RESET
-    if (e.getSource() == reset)
+    if (e.getSource() == reset || e.getSource() == smileyButton)
     {
       game.resetGrid();
     }
