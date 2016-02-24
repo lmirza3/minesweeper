@@ -1,10 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+//import java.util.*;
 
 public class main implements ActionListener{
   
   MineSweeperGrid game = new MineSweeperGrid();
+  Globals globals = new Globals();
   JButton smileyButton;
   JMenuItem topTen;
   JMenuItem reset;
@@ -12,6 +14,11 @@ public class main implements ActionListener{
   
   JMenuItem help;
   JMenuItem about;
+  
+  JTextField timeDisplay;
+  JLabel timeLabel;
+  JFrame f;
+ 
   
   
   public static void main (String args[])
@@ -22,21 +29,38 @@ public class main implements ActionListener{
   public main()
   {
     //overarching frame
-    JFrame f = new JFrame();
+    f = new JFrame();
     
-    //panel for the number of mines left to be found
     JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
+    
+    timeDisplay = new JTextField();
+    timeDisplay.setPreferredSize(new Dimension(40, 25));
+    timeLabel = new JLabel();
+    f.getContentPane().add(timeLabel, BorderLayout.NORTH);
+    
+    javax.swing.Timer t = new javax.swing.Timer(1000, new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              f.repaint();
+          }
+       });
+    
+    
+    t.start();
+    panel2.add(timeLabel);
+    
+    f.getContentPane().add(panel2,BorderLayout.NORTH);
+    //panel for the number of mines left to be found
+    
     Icon smiley = new ImageIcon("C:/Users/Lubna/Dropbox/School/CS 342/mineSweeper/smile_button.gif");
     smileyButton = new JButton(smiley); // Declare and allocate a Button instance called btnColor
+    smileyButton.setPreferredSize(new Dimension(24, 24));
     smileyButton.addActionListener(this);
     f.add(smileyButton);                       // "this" Container adds the Button
-    //smileyButton.setLabel("green");          // Change the button's label
-    //smileyButton.getLabel();                 // Read the button's label
 
     JLabel label = new JLabel("Test text");//initialize the label
-    //do some stuff with label here maybe...
-    panel1.add(label);       //now add it
-    f.add(panel1);
+    
+    f.getContentPane().add(panel1,BorderLayout.NORTH);
     JMenuBar menuBar = new JMenuBar();
     
     JMenu gameMenu = new JMenu("Game");

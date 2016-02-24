@@ -1,6 +1,17 @@
+/**********************************************************************************************************************
+ * CS342 Project 2 Minesweeper
+ * Instructor: Patrick Troy
+ * 
+ * Authors: Yordan Machin and Lubna Mirza
+ * 
+ * This file contains Jpanel for the actual MineSweeper game and all its logic.
+ * 
+ *********************************************************************************************************************/
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Scanner;
+import java.io.*;
 
 public class MineSweeperGrid extends JPanel {
   private MSButton buttons[][];
@@ -8,6 +19,8 @@ public class MineSweeperGrid extends JPanel {
   private GridLayout grid;
   private int numCleared;
   private int markedM;
+  private File fileName = new File("topTen.txt");  //This file must be in project folder for topTen functionality to work.
+  private String[] topTen = new String[11];
   /***************************************Button Icons************************************/
   private Icon normal_button = new ImageIcon( "CS342 Project 2 Minesweeper Images/button_normal.gif" );
   private Icon pressed_button = new ImageIcon( "CS342 Project 2 Minesweeper Images/button_pressed.gif" );
@@ -36,6 +49,25 @@ public class MineSweeperGrid extends JPanel {
     MouseClickHandler mouse = new MouseClickHandler();
     this.numCleared = 0;
     this.markedM = 0;
+    fileName = new File("topTen.txt");
+    topTen = new String[11];
+    
+    try
+    {
+      Scanner input = new Scanner(fileName);
+      
+      int i = 1;
+      while(input.hasNextLine())
+      {
+        topTen[i] = input.nextLine();
+        ++i;
+      }
+      input.close();
+    }
+    catch(Exception ex)
+    {
+      JOptionPane.showMessageDialog (null, "File topTen.txt could not be read.");
+    }
     
     for(int i = 0; i < 10; ++i)
     {
@@ -63,7 +95,102 @@ public class MineSweeperGrid extends JPanel {
   }
   /***************************************************************************************/
   
-  /****************************************Grid Resetter**********************************/
+  /*****************************Check If Score is In topTen*******************************/
+  public boolean checkTopTen(int currScore)
+  {
+    String[][] tmp = new String[11][];
+    for(int i = 1; i < 11; ++i)
+    {
+      tmp[i] = topTen[i].split("\\s");
+    }
+    
+    if(currScore < Integer.parseInt(tmp[10][2]))
+    {
+      return true;
+    } 
+    else
+    {
+      return false;
+    }
+  }
+  /***************************************************************************************/
+  
+  /*****************************Insert into topTen*******************************/
+  public void insertTopTen(int currScore, String user)
+  {
+    String[][] tmp = new String[11][];
+    for(int i = 1; i < 11; ++i)
+    {
+      tmp[i] = topTen[i].split("\\s");
+    }
+    
+    for(int i = 1; i < 11; ++i)
+    {
+      if((i == 10) && (Integer.parseInt(tmp[i][2]) > currScore))
+      {
+        topTen[i] = i + ". " + user + " " + currScore;
+        break;
+      }
+      if(Integer.parseInt(tmp[i][2]) > currScore)
+      {
+        for(int j = 10; j > i; --j)
+        {
+          topTen[j] = j + ". " + tmp[j][1] + " " + tmp[j][2]/*topTen[j-1]*/;
+        }
+        topTen[i] = i + ". " + user + " " + currScore;
+        break;
+      }
+    }
+    
+    try
+    {
+      FileWriter writer = new FileWriter(fileName);
+      BufferedWriter bufWriter = new BufferedWriter(writer);
+      
+      for(int i = 1; i < 11; ++i)
+      {
+        bufWriter.write(topTen[i]);
+        bufWriter.newLine();
+      }
+      
+      bufWriter.close();
+      
+    }
+    catch(IOException ex)
+    {
+      JOptionPane.showMessageDialog(null, "Error writing to file: topTen.txt");
+    }
+    
+  }
+  /***************************************************************************************/
+  
+  /************************************Reset topTen***************************************/
+  public void resetTopTen()
+  {
+    try
+    {
+      FileWriter writer = new FileWriter(fileName);
+      BufferedWriter bufWriter = new BufferedWriter(writer);
+      
+      for(int i = 1; i < 11; ++i)
+      {
+        String temp = (i + ". " + "COMP" + i + " 999");
+        bufWriter.write(temp);
+        bufWriter.newLine();
+      }
+      
+      bufWriter.close();
+      
+    }
+    catch(IOException ex)
+    {
+      JOptionPane.showMessageDialog(null, "Error writing to file: topTen.txt");
+    }
+  }
+  /***************************************************************************************/
+  
+  
+  /***********************************Grid Resetter***************************************/
   public void resetGrid()
   {
     for(int i = 0; i < 10; ++i)
@@ -91,10 +218,27 @@ public class MineSweeperGrid extends JPanel {
     }
     
     numCleared = 0;
+    
+    try
+    {
+      Scanner input = new Scanner(fileName);
+      
+      int i = 1;
+      while(input.hasNextLine())
+      {
+        topTen[i] = input.nextLine();
+        ++i;
+      }
+      input.close();
+    }
+    catch(Exception ex)
+    {
+      JOptionPane.showMessageDialog (null, "File topTen.txt could not be read.");
+    }
   }  
   /***************************************************************************************/
   
-  /***************************************************************************************/
+  /*************************************Calculate Adjacent Mines**************************/
   public int calcAdjMines(MSButton curr)
   {
     int currRow = curr.getRow();
@@ -157,6 +301,7 @@ public class MineSweeperGrid extends JPanel {
   /**************************************Click Handler************************************/
   private class MouseClickHandler extends MouseAdapter
   { 
+    /**********************************Left Click Helper**********************************/
     public void performClick(int currRow, int currCol)
     {
       /*
@@ -166,7 +311,7 @@ public class MineSweeperGrid extends JPanel {
        "\nMine status = " + buttons[currRow][currCol].isMine();
        */
       
-      //Check if button is not maked as possible mine or question mark.
+      //Check if button is not marked as possible mine or question mark.
       if(buttons[currRow][currCol].getState().equals("normal"))
       {
         //Check if button is a mine.
@@ -175,6 +320,20 @@ public class MineSweeperGrid extends JPanel {
           buttons[currRow][currCol].setState("blown");
           buttons[currRow][currCol].setIcon(mineBlown_button);
           JOptionPane.showMessageDialog (null, "You tripped a mine!!! Game Over....");
+          
+          //Mark all mines
+          for(int i = 0; i < 10; ++i)
+          {
+            for(int j = 0; j < 10; ++j)
+            {   
+              if(buttons[i][j].isMine())
+              {
+                buttons[i][j].setState("myMine");
+                buttons[i][j].setIcon(myMine_button);
+                ++markedM;
+              }
+            }
+          }
           
           //Set buttons to unclickable
           for(int i = 0; i < 10; ++i)
@@ -282,6 +441,7 @@ public class MineSweeperGrid extends JPanel {
         }
       }
     }
+    /***************************************************************************************/
     
     public void mouseClicked (MouseEvent e)
     { 
@@ -289,12 +449,28 @@ public class MineSweeperGrid extends JPanel {
       MSButton tmp = (MSButton) e.getSource();
       int currRow = tmp.getRow();
       int currCol = tmp.getCol();
-      /********************************Left Click Handle**********************************/
+      /********************************Left Click Handler***********************************/
       if (SwingUtilities.isLeftMouseButton(e))
       {
         performClick(currRow, currCol);
+        
+        //All buttons cleared
         if(numCleared >= 90)
         { 
+          //Mark all mines
+          for(int i = 0; i < 10; ++i)
+          {
+            for(int j = 0; j < 10; ++j)
+            {   
+              if(buttons[i][j].isMine())
+              {
+                buttons[i][j].setState("myMine");
+                buttons[i][j].setIcon(myMine_button);
+                ++markedM;
+              }
+            }
+          }
+             
           //Set buttons to unclickable
           for(int i = 0; i < 10; ++i)
           {  
@@ -304,11 +480,19 @@ public class MineSweeperGrid extends JPanel {
               buttons[i][j].setState("gameOver");
             }
           }
+          
           JOptionPane.showMessageDialog (null, "You cleared the board!!! Good Job!!");
+          if(checkTopTen(numCleared))
+          {
+            String tmpUser = JOptionPane.showInputDialog("You made the Top Ten!! Enter your Name: ");
+            String[] currUser = tmpUser.split("\\s");
+            
+            insertTopTen(numCleared, currUser[0]);  
+          }
           
           resetGrid();
         }
-      }  
+      }/***********************************Right Click Handler******************************/  
       else if (SwingUtilities.isRightMouseButton(e))
       {
         //s = "Right Mouse Click";
