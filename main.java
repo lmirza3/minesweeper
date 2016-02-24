@@ -122,6 +122,10 @@ public class main implements ActionListener{
   
   public void actionPerformed(ActionEvent e) {
     //TOP TEN
+    if (e.getSource() == topTen)
+    {
+    //  FileReader fr = new FileReader("topTen.txt");
+    }
     if(e.getSource() == resetTopTen){
       game.resetTopTen();
     }
@@ -137,6 +141,7 @@ public class main implements ActionListener{
     {
       game.resetGrid();
       Seconds.seconds = 0;
+      game.mineFlag = 0;
     }
     //HELP
     if (e.getSource() == help)

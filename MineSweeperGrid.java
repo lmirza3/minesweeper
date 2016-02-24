@@ -488,12 +488,12 @@ public class MineSweeperGrid extends JPanel {
           }
           gameCompletedFlag = 1;
           JOptionPane.showMessageDialog (null, "You cleared the board!!! Good Job!!");
-          if(checkTopTen(numCleared))
+          if(checkTopTen(secondsElapsed))
           {
             String tmpUser = JOptionPane.showInputDialog("You made the Top Ten!! Enter your Name: ");
             String[] currUser = tmpUser.split("\\s");
             
-            insertTopTen(numCleared, currUser[0]);  
+            insertTopTen(secondsElapsed, currUser[0]);  
           }
           
           resetGrid();
@@ -501,7 +501,7 @@ public class MineSweeperGrid extends JPanel {
       }/***********************************Right Click Handler******************************/  
       else if (SwingUtilities.isRightMouseButton(e))
       {
-        mineFlag--;
+        
         
         //s = "Right Mouse Click";
         if(buttons[currRow][currCol].getState().equals("normal"))
@@ -509,10 +509,12 @@ public class MineSweeperGrid extends JPanel {
           buttons[currRow][currCol].setState("myMine");
           buttons[currRow][currCol].setIcon(myMine_button);
           ++markedM;
+          mineFlag--;
         }
         else if(buttons[currRow][currCol].getState().equals("myMine"))
         {
           --markedM;
+          mineFlag++;
           buttons[currRow][currCol].setState("question");
           buttons[currRow][currCol].setIcon(question_button);
         }
