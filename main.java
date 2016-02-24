@@ -1,12 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import java.util.*;
+import java.io.*;
 
 public class main implements ActionListener{
   
   MineSweeperGrid game = new MineSweeperGrid();
-  Globals globals = new Globals();
   JButton smileyButton;
   JMenuItem topTen;
   JMenuItem reset;
@@ -17,7 +16,6 @@ public class main implements ActionListener{
   
   JTextField timeDisplay;
   JLabel timeLabel;
-  JFrame f;
  
   
   
@@ -29,38 +27,31 @@ public class main implements ActionListener{
   public main()
   {
     //overarching frame
-    f = new JFrame();
-    
+    JFrame f = new JFrame();
+    //labels
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     
-    timeDisplay = new JTextField();
-    timeDisplay.setPreferredSize(new Dimension(40, 25));
-    timeLabel = new JLabel();
-    f.getContentPane().add(timeLabel, BorderLayout.NORTH);
-    
-    javax.swing.Timer t = new javax.swing.Timer(1000, new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-              f.repaint();
-          }
-       });
-    
-    
-    t.start();
-    panel2.add(timeLabel);
-    
-    f.getContentPane().add(panel2,BorderLayout.NORTH);
-    //panel for the number of mines left to be found
-    
+    //Adding RESET button
     Icon smiley = new ImageIcon("C:/Users/Lubna/Dropbox/School/CS 342/mineSweeper/smile_button.gif");
-    smileyButton = new JButton(smiley); // Declare and allocate a Button instance called btnColor
+    smileyButton = new JButton(smiley); 
     smileyButton.setPreferredSize(new Dimension(24, 24));
     smileyButton.addActionListener(this);
-    f.add(smileyButton);                       // "this" Container adds the Button
-
-    JLabel label = new JLabel("Test text");//initialize the label
+    panel1.add(smileyButton);
+    f.getContentPane().add(panel1,BorderLayout.NORTH);    
     
-    f.getContentPane().add(panel1,BorderLayout.NORTH);
+    
+    //adding counter
+    JLabel countDownLabel = new JLabel();
+    countDownLabel.setText("" + Seconds.seconds);
+    panel2.add(countDownLabel);
+    f.getContentPane().add(panel2,BorderLayout.NORTH);
+    //Starting counter
+    CountDown countDown = new CountDown(countDownLabel);
+    Timer timer = new Timer(1000, countDown);
+    timer.start();
+    
+   
     JMenuBar menuBar = new JMenuBar();
     
     JMenu gameMenu = new JMenu("Game");
@@ -117,8 +108,6 @@ public class main implements ActionListener{
   public void actionPerformed(ActionEvent e) {
     //TOP TEN
     if(e.getSource() == topTen){
-      System.out.println("hi");
-      //perform action when textYes clicked
     }
     //ABOUT
     if(e.getSource() == about){
@@ -131,6 +120,7 @@ public class main implements ActionListener{
     if (e.getSource() == reset || e.getSource() == smileyButton)
     {
       game.resetGrid();
+      Seconds.seconds = 0;
     }
     //HELP
     if (e.getSource() == help)
@@ -149,3 +139,20 @@ public class main implements ActionListener{
   }
 }
 
+class CountDown implements ActionListener {
+    private JLabel countDownLabel;
+
+    public CountDown(JLabel countDownLabel) {
+        this.countDownLabel = countDownLabel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Seconds.seconds++;
+        this.countDownLabel.setText("" + Seconds.seconds);
+    }
+}
+
+class Seconds {
+    public static int seconds = 0;
+}

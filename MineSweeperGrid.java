@@ -14,6 +14,7 @@ import java.util.Scanner;
 import java.io.*;
 
 public class MineSweeperGrid extends JPanel {
+  int timeElapsed;
   private MSButton buttons[][];
   private Container container;
   private GridLayout grid;
@@ -480,7 +481,7 @@ public class MineSweeperGrid extends JPanel {
               buttons[i][j].setState("gameOver");
             }
           }
-          
+
           JOptionPane.showMessageDialog (null, "You cleared the board!!! Good Job!!");
           if(checkTopTen(numCleared))
           {
