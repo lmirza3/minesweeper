@@ -19,8 +19,6 @@ public class main implements ActionListener{
   JLabel timeLabel;
   JLabel mineLabel;
   
-  
-  
   public static void main (String args[])
   {
     new main();
@@ -124,7 +122,29 @@ public class main implements ActionListener{
     //TOP TEN
     if (e.getSource() == topTen)
     {
-    //  FileReader fr = new FileReader("topTen.txt");
+      String fileName = "topTen.txt";
+      String line = null;
+      
+      try {
+            FileReader fr = new FileReader(fileName);
+
+            BufferedReader br = new BufferedReader(fr);
+
+            while((line = br.readLine()) != null) {
+                System.out.println(line);
+            }   
+            br.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");
+        }
     }
     if(e.getSource() == resetTopTen){
       game.resetTopTen();
