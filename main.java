@@ -161,7 +161,7 @@ public class main implements ActionListener{
     {
       game.resetGrid();
       Seconds.seconds = 0;
-      game.mineFlag = 0;
+      game.mineFlag = 10;
     }
     //HELP
     if (e.getSource() == help)
@@ -192,9 +192,9 @@ public class main implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
       Seconds.seconds++;
-      this.countDownLabel.setText("" + Seconds.seconds);
+      this.countDownLabel.setText("Secs Elapsed: " + Seconds.seconds);
       if (game.mineFlag != 0)
-        mineLabel.setText("" + game.mineFlag);
+        mineLabel.setText("Mines Left: " + game.mineFlag);
       if (game.mineFlag <= 0)
       {
         mineLabel.setText("0");
