@@ -14,7 +14,6 @@ import java.util.Scanner;
 import java.io.*;
 
 public class MineSweeperGrid extends JPanel {
-  int timeElapsed;
   private MSButton buttons[][];
   private Container container;
   private GridLayout grid;
@@ -37,7 +36,9 @@ public class MineSweeperGrid extends JPanel {
   private Icon button7 = new ImageIcon( "CS342 Project 2 Minesweeper Images/button_7.gif" );
   private Icon button8 = new ImageIcon( "CS342 Project 2 Minesweeper Images/button_8.gif" );
   /***************************************************************************************/
-  
+  public int mineFlag;
+  public int secondsElapsed;
+  public int gameCompletedFlag;
  /***********************************Game Grid Constructor********************************/
   public MineSweeperGrid(){
     
@@ -52,6 +53,9 @@ public class MineSweeperGrid extends JPanel {
     this.markedM = 0;
     fileName = new File("topTen.txt");
     topTen = new String[11];
+    mineFlag = 10;
+    secondsElapsed = 0;
+    gameCompletedFlag = 0;
     
     try
     {
@@ -97,7 +101,7 @@ public class MineSweeperGrid extends JPanel {
   /***************************************************************************************/
   
   /*****************************Check If Score is In topTen*******************************/
-  public boolean checkTopTen(int currScore)
+  public boolean checkTopTen(int secondsElapsed)
   {
     String[][] tmp = new String[11][];
     for(int i = 1; i < 11; ++i)
@@ -105,7 +109,7 @@ public class MineSweeperGrid extends JPanel {
       tmp[i] = topTen[i].split("\\s");
     }
     
-    if(currScore < Integer.parseInt(tmp[10][2]))
+    if(secondsElapsed < Integer.parseInt(tmp[10][2]))
     {
       return true;
     } 
@@ -117,7 +121,7 @@ public class MineSweeperGrid extends JPanel {
   /***************************************************************************************/
   
   /*****************************Insert into topTen*******************************/
-  public void insertTopTen(int currScore, String user)
+  public void insertTopTen(int secondsElapsed, String user)
   {
     String[][] tmp = new String[11][];
     for(int i = 1; i < 11; ++i)
@@ -127,18 +131,18 @@ public class MineSweeperGrid extends JPanel {
     
     for(int i = 1; i < 11; ++i)
     {
-      if((i == 10) && (Integer.parseInt(tmp[i][2]) > currScore))
+      if((i == 10) && (Integer.parseInt(tmp[i][2]) > secondsElapsed))
       {
-        topTen[i] = i + ". " + user + " " + currScore;
+        topTen[i] = i + ". " + user + " " + secondsElapsed;
         break;
       }
-      if(Integer.parseInt(tmp[i][2]) > currScore)
+      if(Integer.parseInt(tmp[i][2]) > secondsElapsed)
       {
         for(int j = 10; j > i; --j)
         {
           topTen[j] = j + ". " + tmp[j][1] + " " + tmp[j][2]/*topTen[j-1]*/;
         }
-        topTen[i] = i + ". " + user + " " + currScore;
+        topTen[i] = i + ". " + user + " " + secondsElapsed;
         break;
       }
     }
@@ -331,6 +335,7 @@ public class MineSweeperGrid extends JPanel {
               {
                 buttons[i][j].setState("myMine");
                 buttons[i][j].setIcon(myMine_button);
+                
                 ++markedM;
               }
             }
@@ -481,7 +486,7 @@ public class MineSweeperGrid extends JPanel {
               buttons[i][j].setState("gameOver");
             }
           }
-
+          gameCompletedFlag = 1;
           JOptionPane.showMessageDialog (null, "You cleared the board!!! Good Job!!");
           if(checkTopTen(numCleared))
           {
@@ -496,6 +501,8 @@ public class MineSweeperGrid extends JPanel {
       }/***********************************Right Click Handler******************************/  
       else if (SwingUtilities.isRightMouseButton(e))
       {
+        mineFlag--;
+        
         //s = "Right Mouse Click";
         if(buttons[currRow][currCol].getState().equals("normal"))
         {

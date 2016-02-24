@@ -8,6 +8,7 @@ public class main implements ActionListener{
   MineSweeperGrid game = new MineSweeperGrid();
   JButton smileyButton;
   JMenuItem topTen;
+  JMenuItem resetTopTen;
   JMenuItem reset;
   JMenuItem exit;
   
@@ -16,6 +17,7 @@ public class main implements ActionListener{
   
   JTextField timeDisplay;
   JLabel timeLabel;
+  JLabel mineLabel;
  
   
   
@@ -31,9 +33,16 @@ public class main implements ActionListener{
     //labels
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
+    JPanel panel3 = new JPanel();
+    
+    //ADDING MINE NUMBER
+    mineLabel = new JLabel();
+    mineLabel.setText("" + game.mineFlag);
+    panel3.add(mineLabel);
+    f.getContentPane().add(panel3,BorderLayout.NORTH);
     
     //Adding RESET button
-    Icon smiley = new ImageIcon("C:/Users/Lubna/Dropbox/School/CS 342/mineSweeper/smile_button.gif");
+    Icon smiley = new ImageIcon("CS342 Project 2 Minesweeper Images/smile_button.gif");
     smileyButton = new JButton(smiley); 
     smileyButton.setPreferredSize(new Dimension(24, 24));
     smileyButton.addActionListener(this);
@@ -73,6 +82,11 @@ public class main implements ActionListener{
     topTen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
     topTen.addActionListener(this);
     
+    resetTopTen = new JMenuItem("Reset Top Ten", KeyEvent.VK_T);
+    resetTopTen.setMnemonic(KeyEvent.VK_T); //used constructor instead
+    resetTopTen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+    resetTopTen.addActionListener(this);
+    
     exit = new JMenuItem("Exit", KeyEvent.VK_T);
     exit.setMnemonic(KeyEvent.VK_T); //used constructor instead
     exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
@@ -91,6 +105,7 @@ public class main implements ActionListener{
     
     gameMenu.add(reset);
     gameMenu.add(topTen);
+    gameMenu.add(resetTopTen);
     gameMenu.add(exit);
     
     helpMenu.add(help);
@@ -107,7 +122,8 @@ public class main implements ActionListener{
   
   public void actionPerformed(ActionEvent e) {
     //TOP TEN
-    if(e.getSource() == topTen){
+    if(e.getSource() == resetTopTen){
+      game.resetTopTen();
     }
     //ABOUT
     if(e.getSource() == about){
@@ -137,22 +153,47 @@ public class main implements ActionListener{
     }
     
   }
-}
 
+
+/*class countActionListener implements ActionListener  {
+           public void actionPerformed(ActionEvent event)  {
+               newMins = Integer.parseInt(newMinsField.getText());
+               cnt += newMins;
+               System.out.println(cnt);
+               count = new JLabel("The total now is " + cnt);
+               count.repaint();
+           }
+       }
+*/
 class CountDown implements ActionListener {
     private JLabel countDownLabel;
+    
 
     public CountDown(JLabel countDownLabel) {
         this.countDownLabel = countDownLabel;
     }
+    
+    //public CountDown(JLabel 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Seconds.seconds++;
         this.countDownLabel.setText("" + Seconds.seconds);
+        if (game.mineFlag != 0)
+          mineLabel.setText("" + game.mineFlag);
+        if (game.mineFlag <= 0)
+        {
+          mineLabel.setText("0");
+        }
+        
+        
+        if (game.gameCompletedFlag == 1 )
+        {
+          game.secondsElapsed = Seconds.seconds;
+        }
     }
 }
-
+}
 class Seconds {
     public static int seconds = 0;
 }
