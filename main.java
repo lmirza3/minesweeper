@@ -18,7 +18,7 @@ public class main implements ActionListener{
   JTextField timeDisplay;
   JLabel timeLabel;
   JLabel mineLabel;
- 
+  
   
   
   public static void main (String args[])
@@ -60,7 +60,7 @@ public class main implements ActionListener{
     Timer timer = new Timer(1000, countDown);
     timer.start();
     
-   
+    
     JMenuBar menuBar = new JMenuBar();
     
     JMenu gameMenu = new JMenu("Game");
@@ -153,47 +153,36 @@ public class main implements ActionListener{
     }
     
   }
-
-
-/*class countActionListener implements ActionListener  {
-           public void actionPerformed(ActionEvent event)  {
-               newMins = Integer.parseInt(newMinsField.getText());
-               cnt += newMins;
-               System.out.println(cnt);
-               count = new JLabel("The total now is " + cnt);
-               count.repaint();
-           }
-       }
-*/
-class CountDown implements ActionListener {
+  
+  class CountDown implements ActionListener {
     private JLabel countDownLabel;
     
-
+    
     public CountDown(JLabel countDownLabel) {
-        this.countDownLabel = countDownLabel;
+      this.countDownLabel = countDownLabel;
     }
     
     //public CountDown(JLabel 
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-        Seconds.seconds++;
-        this.countDownLabel.setText("" + Seconds.seconds);
-        if (game.mineFlag != 0)
-          mineLabel.setText("" + game.mineFlag);
-        if (game.mineFlag <= 0)
-        {
-          mineLabel.setText("0");
-        }
-        
-        
-        if (game.gameCompletedFlag == 1 )
-        {
-          game.secondsElapsed = Seconds.seconds;
-        }
+      Seconds.seconds++;
+      this.countDownLabel.setText("" + Seconds.seconds);
+      if (game.mineFlag != 0)
+        mineLabel.setText("" + game.mineFlag);
+      if (game.mineFlag <= 0)
+      {
+        mineLabel.setText("0");
+      }
+      
+      
+      if (game.gameCompletedFlag == 1 )
+      {
+        game.secondsElapsed = Seconds.seconds;
+      }
     }
-}
+  }
 }
 class Seconds {
-    public static int seconds = 0;
+  public static int seconds = 0;
 }

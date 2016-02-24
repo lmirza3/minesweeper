@@ -1,12 +1,12 @@
 /**********************************************************************************************************************
- * CS342 Project 2 Minesweeper
- * Instructor: Patrick Troy
- * 
- * Authors: Yordan Machin and Lubna Mirza
- * 
- * This file contains Jpanel for the actual MineSweeper game and all its logic.
- * 
- *********************************************************************************************************************/
+  * CS342 Project 2 Minesweeper
+  * Instructor: Patrick Troy
+  * 
+  * Authors: Yordan Machin and Lubna Mirza
+  * 
+  * This file contains Jpanel for the actual MineSweeper game and all its logic.
+  * 
+  *********************************************************************************************************************/
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -39,7 +39,7 @@ public class MineSweeperGrid extends JPanel {
   public int mineFlag;
   public int secondsElapsed;
   public int gameCompletedFlag;
- /***********************************Game Grid Constructor********************************/
+  /***********************************Game Grid Constructor********************************/
   public MineSweeperGrid(){
     
     this.setBackground(Color.RED);
@@ -353,97 +353,97 @@ public class MineSweeperGrid extends JPanel {
         }
         else
         {
-            int numAdjMines = calcAdjMines(buttons[currRow][currCol]);
-            
-            switch(numAdjMines)
+          int numAdjMines = calcAdjMines(buttons[currRow][currCol]);
+          
+          switch(numAdjMines)
+          {
+            case 0: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(pressed_button);
+            ++numCleared;
+            //NW-Button
+            if((currRow > 0) && (currCol > 0))
             {
-              case 0: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(pressed_button);
-              ++numCleared;
-              //NW-Button
-              if((currRow > 0) && (currCol > 0))
-              {
-                //buttons[currRow-1][currCol-1].mousePressed();
-                performClick(currRow-1, currCol-1);
-              }
-              //N-Button
-              if(currRow > 0)
-              {
-                //buttons[currRow-1][currCol].mousePressed();
-                performClick(currRow-1, currCol);
-              }
-              //NE-Button
-              if((currRow > 0) && (currCol < 9))
-              {
-                //buttons[currRow-1][currCol+1].mousePressed();
-                performClick(currRow-1, currCol+1);
-              }
-              //W-Button
-              if(currCol > 0)
-              {
-                //buttons[currRow][currCol-1].doClick();
-                performClick(currRow, currCol-1);
-              }
-              //SW-Button
-              if((currRow < 9) && (currCol > 0))
-              {
-                //buttons[currRow+1][currCol-1].doClick();
-                performClick(currRow+1, currCol-1);
-              }
-              //S-Button
-              if(currRow < 9)
-              {
-                //buttons[currRow+1][currCol].doClick();
-                performClick(currRow+1, currCol);
-              }
-              //SE-Button
-              if((currRow < 9) && (currCol < 9))
-              {
-                //buttons[currRow+1][currCol+1].doClick();
-                performClick(currRow+1, currCol+1);
-              }
-              //E-Button
-              if(currCol < 9)
-              {
-                //buttons[currRow][currCol+1].doClick();
-                performClick(currRow, currCol+1);
-              }
-              break;
-              case 1: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button1);
-              ++numCleared;
-              break;
-              case 2: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button2);
-              ++numCleared;
-              break;
-              case 3: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button3);
-              ++numCleared;
-              break;
-              case 4: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button4);
-              ++numCleared;
-              break;
-              case 5: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button5);
-              ++numCleared;
-              break;
-              case 6: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button6);
-              ++numCleared;
-              break;
-              case 7: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button7);
-              ++numCleared;
-              break;
-              case 8: buttons[currRow][currCol].setState("pushed");
-              buttons[currRow][currCol].setIcon(button8);
-              ++numCleared;
-              break;
-            }  
-            
-            //JOptionPane.showMessageDialog (null, "Number of Adjacent Mines = " + numAdjMines);
+              //buttons[currRow-1][currCol-1].mousePressed();
+              performClick(currRow-1, currCol-1);
+            }
+            //N-Button
+            if(currRow > 0)
+            {
+              //buttons[currRow-1][currCol].mousePressed();
+              performClick(currRow-1, currCol);
+            }
+            //NE-Button
+            if((currRow > 0) && (currCol < 9))
+            {
+              //buttons[currRow-1][currCol+1].mousePressed();
+              performClick(currRow-1, currCol+1);
+            }
+            //W-Button
+            if(currCol > 0)
+            {
+              //buttons[currRow][currCol-1].doClick();
+              performClick(currRow, currCol-1);
+            }
+            //SW-Button
+            if((currRow < 9) && (currCol > 0))
+            {
+              //buttons[currRow+1][currCol-1].doClick();
+              performClick(currRow+1, currCol-1);
+            }
+            //S-Button
+            if(currRow < 9)
+            {
+              //buttons[currRow+1][currCol].doClick();
+              performClick(currRow+1, currCol);
+            }
+            //SE-Button
+            if((currRow < 9) && (currCol < 9))
+            {
+              //buttons[currRow+1][currCol+1].doClick();
+              performClick(currRow+1, currCol+1);
+            }
+            //E-Button
+            if(currCol < 9)
+            {
+              //buttons[currRow][currCol+1].doClick();
+              performClick(currRow, currCol+1);
+            }
+            break;
+            case 1: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button1);
+            ++numCleared;
+            break;
+            case 2: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button2);
+            ++numCleared;
+            break;
+            case 3: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button3);
+            ++numCleared;
+            break;
+            case 4: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button4);
+            ++numCleared;
+            break;
+            case 5: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button5);
+            ++numCleared;
+            break;
+            case 6: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button6);
+            ++numCleared;
+            break;
+            case 7: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button7);
+            ++numCleared;
+            break;
+            case 8: buttons[currRow][currCol].setState("pushed");
+            buttons[currRow][currCol].setIcon(button8);
+            ++numCleared;
+            break;
+          }  
+          
+          //JOptionPane.showMessageDialog (null, "Number of Adjacent Mines = " + numAdjMines);
         }
       }
     }
@@ -476,7 +476,7 @@ public class MineSweeperGrid extends JPanel {
               }
             }
           }
-             
+          
           //Set buttons to unclickable
           for(int i = 0; i < 10; ++i)
           {  
@@ -523,8 +523,8 @@ public class MineSweeperGrid extends JPanel {
         }
       }
       //else if (SwingUtilities.isMiddleMouseButton(e))
-        //s = "Middle Mouse Click";   
-
+      //s = "Middle Mouse Click";   
+      
       //s = s + "\nSHIFT_MASK: " + e.isShiftDown();
       //s = s + "\nCTRL_MASK: " + e.isControlDown();
       //s = s + "\nMETA_MASK: " + e.isMetaDown();
@@ -542,7 +542,7 @@ public class MineSweeperGrid extends JPanel {
     private String state;
     private Icon icon;
     private boolean mineStatus;
-  
+    
     public MSButton(int r, int c, String s, Icon i)
     {
       super("", i);
@@ -566,12 +566,12 @@ public class MineSweeperGrid extends JPanel {
     {
       this.state = s;
     }  
-  
+    
     public String getState()
     {
       return this.state;
     }
-  
+    
     public int getRow()
     {
       return this.row;
@@ -580,8 +580,8 @@ public class MineSweeperGrid extends JPanel {
     {
       return this.col;
     }  
-  
+    
   }
   /***************************************************************************************/
-   
+  
 }
