@@ -537,13 +537,13 @@ public class MineSweeperGrid extends JPanel {
   /***************************************************************************************/
   
   /**************************************MSButton Class***********************************/
-  private class MSButton extends JButton 
+  protected class MSButton extends JButton 
   {
     private int row;
     private int col;
     private String state;
     private Icon icon;
-    private boolean mineStatus;
+    public boolean mineStatus;
     
     public MSButton(int r, int c, String s, Icon i)
     {
